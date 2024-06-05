@@ -67,3 +67,36 @@ def test_detailed_orders():
     assert orders[0][1] == "Sergii"
     assert orders[0][2] == "солодка вода"
     assert orders[0][3] == "з цукром"
+
+
+@pytest.mark.database
+def test_inserted_data_types():
+    db = Database()
+    data = db.insert_product(99, "тестові", "дані", 999)
+
+    print(data)
+
+    assert isinstance(data[0], int)
+    assert isinstance(data[1], str)
+    assert isinstance(data[2], str)
+    assert isinstance(data[3], int)
+
+
+@pytest.mark.database
+def test_items_quantity():
+    db = Database()
+    query = "SELECT COUNT(*) FROM products"
+    db.cursor.execute(query)
+    count = db.cursor.fetchone()[0]
+
+    print("Кількість продуктів: ", count)
+
+    assert count >= 0
+
+
+@pytest.mark.database
+def test_adding_product_quantity_more_than_zero():
+    db = Database()
+    data = db.insert_product(99, "тестові", "дані", 999)
+
+    assert data[3] > 0

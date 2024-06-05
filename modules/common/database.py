@@ -44,6 +44,13 @@ class Database:
         self.cursor.execute(query)
         self.connection.commit()
 
+        self.cursor.execute(
+            f"SELECT id, name, description, quantity FROM products WHERE id = {product_id}"
+        )
+        inserted_data = self.cursor.fetchone()
+
+        return inserted_data
+
     def delete_products_by_id(self, product_id):
         query = f"DELETE FROM products WHERE id = {product_id}"
         self.cursor.execute(query)
